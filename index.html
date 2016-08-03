@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Form Tools</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="build/react-with-addons.js"></script>
+</head>
+<body>
+<script src="./build/react.js"></script>
+<script src="./build/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+<section id="App" class="formApp"></section>
+
+<script type="text/babel">
+
+    const getNewForm = (function (form, element) {
+        form.push(element);
+        return form;
+    });
+
+    const deleteForm = (function (form, index) {
+        form.splice(index, 1);
+        return form;
+    });
+
+    class CreatedForm extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                form: [],
+                flag: true
+            };
+        }
+
+        addInputText() {
+            this.setState({
+                form: getNewForm(this.state.form, 0),
+                index: this.state.index++
+            });
+        }
+
+        addSeleteDate() {
+            this.setState({
+                form: getNewForm(this.state.form, 1),
+                index: this.state.index++
+            });
+        }
+
+        deleteForm(index) {
+            this.setState({
+                form: deleteForm(this.state.form, index)
+            });
+        }
+
+        display() {
+            this.setState({
+                flag: !this.state.flag
+            });
+        }
+
+        getFormList() {
+            if (this.state.form.length != 0) {
+                return <div className="col-lg-9 text-center">
+                    {
+                        this.state.form.map((form, index)=> {
+                            if (form === 0) {
+                                return <div>
+                                    <br/>
+                                    <form className="text-center">
+                                        <textarea> </textarea>
+                                        <button type="button" className="btn btn-link"
+                                                onClick={() => this.deleteForm(index)}>删除
+
+                                        </button>
+                                    </form>
+                                    <br/>
+                                </div>
+                            }
+                            else {
+                                return <div>
+                                    <br/>
+                                    <form className="text-center">
+                                        <input type="date"/>
+                                        <button type="button" className="btn btn-link"
+                                                onClick={() => this.deleteForm(index)}>删除
+                                        </button>
+                                    </form>
+                                    <br/>
+                                </div>
+                            }
+                        })
+                    }
+                </div>
+            }
+            else {
+                return <div className="col-md-9 text-center"></div>
+            }
+        }
+
+        render() {
+            if (this.state.flag) {
+
+                return (
+                        <div className="text-center">
+                            <div>
+                                <button type="button" className="btn btn-primary btn-lg btn-block"
+                                        onClick={() => this.display()}>预览
+                                </button>
+                                <br/>
+                            </div>
+                            <div className="text-center">
+                                {this.getFormList()}
+                                <div className="col-md-3 col-lg-offset-9">
+                                    <div>
+                                        <button type="button" className="btn btn-link  btn-lg text-center"
+                                                onClick={() => this.addInputText()}>文本框
+                                        </button>
+                                    </div>
+                                    <button type="button" className="btn btn-link  btn-lg text-center"
+                                            onClick={() => this.addSeleteDate()}>日 期
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                )
+            } else {
+                return (
+                        <div className="text-center">
+                            <button type="button" className="btn btn-primary btn-lg btn-block"
+                                    onClick={() => this.display()}>编辑
+                            </button>
+                            <br/>
+                            <div className="text-center">
+                                {this.state.form.map(from => {
+                                    if (from === 0) {
+                                        return <div>
+                                            <br/>
+                                            <textarea> </textarea>
+                                            <br/>
+                                        </div>
+                                    } else {
+                                        return <div>
+                                            <br/>
+                                            <input className="col-lg-2 col-lg-offset-5 text-center" type="date"/>
+                                            <br/>
+                                        </div>
+
+                                    }
+                                })}
+                            </div>
+                            <br/>
+                            <br/>
+                            <button type="button" className="text-center btn btn-primary btn-lg">提交</button>
+                        </div>
+                )
+            }
+        }
+    }
+
+    ReactDOM.render(<div>
+        <CreatedForm/>
+    </div>, document.getElementById('App'));
+</script>
+<script src="bootstrap/js/jquery.min.js"></script>
+<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
